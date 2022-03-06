@@ -1,0 +1,18 @@
+## Caddyfile for nickersonm.com and nickersondevices.com
+#   (c) Michael Nickerson 2022
+{
+  email <email>
+  # for local development
+  local_certs
+  skip_install_trust
+  # For staging
+  # acme_ca https://acme-staging-v02.api.letsencrypt.org/directory
+  
+  # Optional DNS challenge authentication
+  # acme_dns cloudflare <apikey>
+}
+
+
+import helper-snippets
+
+import sites-enabled/*

@@ -1,0 +1,37 @@
+## Helper snippets for Caddyfile
+#   (c) Michael Nickerson 2022
+
+# Generic statically-served domain; first argument is subdirectory of /var/www for root location
+(static) {
+  # Specify root location
+  root * /var/www/{args.0}
+  
+  # Enable compression
+  encode zstd gzip
+  
+  # Serve static files
+  file_server
+}
+
+(auth) {
+  @location expression `{location} == "{args.0}"`
+  basicauth @location {
+    import auth/{args.1}
+  }
+  basicauth {args.0}/* {
+    import auth/{args.1}
+  }
+}
+
+# Redirect subdomain to use subdomains
+(subredir) {
+  @subdomain {
+    path_regexp subdomain /subdomains/([^/]*)/(.*)
+  }
+  redir @subdomain https://{re.subdomain.1}.{host}/{re.subdomain.2}
+}
+
+# Helper to check root placeholder for specified location
+(notrootmatch) {
+  not expression `{http.vars.root}.contains("{args.0}")`
+}
