@@ -60,6 +60,12 @@ mail.nickersonm.com {
   # Otherwise just serve specified location
   import static nickersonm.com{location}/
   
+  # Enable indexing for specific subdomains
+  @browse {
+    import rootmatch subdomains/jila1
+  }
+  file_server @browse browse
+  
   # PHP site
   @phpdirs {
     # expression `{root} == "*"`

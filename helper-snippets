@@ -35,3 +35,8 @@
 (notrootmatch) {
   not expression `{http.vars.root}.contains("{args.0}")`
 }
+
+# Helper to check root placeholder for specified location
+(rootmatch) {
+  expression `{http.vars.root}.contains("{args.0}")`
+}
