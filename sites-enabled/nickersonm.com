@@ -32,7 +32,7 @@ nickersonm.com {
 }
 
 # Define explicitly to manage certificates for mail.nickersonm.com
-# Certificates in /var/lib/caddy/.local/share/caddy/certificates/local
+# Certificates in /var/lib/caddy/.local/share/caddy/certificates/acme-v02.api.letsencrypt.org-directory/
 mail.nickersonm.com {
   redir https://nickersonm.com permanent
 }
@@ -41,11 +41,11 @@ mail.nickersonm.com {
 *.nickersonm.com {
   # Map subdomain ({labels.2}) to location; optionally redirect instead
   map {labels.2}      {redir} {location} {
-      webmail         0       "/webmail"
-      resume          1       "/resume"
+      webmail         "0"     "/webmail"
+      resume          "1"     "/resume"
       
       # Default via capture group
-      ~(.*)           0       "/subdomains/${0}"
+      ~(.*)           "0"     "/subdomains/${0}"
   }
   
   # Redirect if desired
@@ -62,7 +62,10 @@ mail.nickersonm.com {
   
   # Enable indexing for specific subdomains
   @browse {
-    import rootmatch subdomains/jila1
+      not {
+        not vars_regexp {http.vars.root} (.*subdomains/jila1.*)
+        not vars_regexp {http.vars.root} (.*subdomains/papers.*)
+      }
   }
   file_server @browse browse
   

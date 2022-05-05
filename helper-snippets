@@ -14,7 +14,7 @@
 }
 
 (auth) {
-  @location expression `{location} == "{args.0}"`
+  @location vars {location} {args.0}
   basicauth @location {
     import auth/{args.1}
   }
@@ -33,10 +33,10 @@
 
 # Helper to check root placeholder for specified location
 (notrootmatch) {
-  not expression `{http.vars.root}.contains("{args.0}")`
+  not vars_regexp {http.vars.root} (.*{args.0}.*)
 }
 
 # Helper to check root placeholder for specified location
 (rootmatch) {
-  expression `{http.vars.root}.contains("{args.0}")`
+  vars_regexp root {http.vars.root} (.*{args.0}.*)
 }
